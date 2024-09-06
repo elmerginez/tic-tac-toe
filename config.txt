@@ -1,0 +1,35 @@
+Recomendaciones para la UI
+
+    Animaciones Suaves:
+        Añadir transiciones suaves en las celdas cuando se realiza una jugada para que el juego sea más atractivo visualmente. Por ejemplo, puedes hacer que el texto de la celda se deslice o aparezca suavemente.
+
+    Indicador de Turno:
+        Muestra el turno actual del jugador (X o O) en la parte superior del tablero. Esto ayuda a los jugadores a saber quién está jugando en cada momento.
+
+    Mejorar el Botón de Reinicio:
+        Agrega un estado activo y deshabilitado al botón de reinicio, o incluso un mensaje de confirmación para evitar reinicios accidentales.
+
+    Feedback Visual:
+        Resalta las celdas que forman la línea ganadora con un color diferente o un borde más grueso. Esto ayuda a los jugadores a ver fácilmente el resultado.
+
+    Diseño Responsivo:
+        Asegúrate de que el tablero y los botones se adapten a diferentes tamaños de pantalla, especialmente en dispositivos móviles.
+
+    Estilo de Texto:
+        Usa una fuente llamativa para los X y O, y asegúrate de que el texto sea legible y esté centrado correctamente en cada celda.
+
+    Incorporar Iconos:
+        Considera usar íconos en lugar de solo X y O para un aspecto más moderno. Puedes usar íconos de una biblioteca como FontAwesome.
+
+Paleta de Colores
+
+Aquí tienes una paleta de colores moderna y atractiva para tu juego de Tres en Raya:
+
+    Primario (Fondo del tablero): #F8F9FA (Color gris muy claro para el fondo del tablero, similar al blanco pero un poco más suave)
+    Secundario (Celdas): #FFFFFF (Blanco para las celdas del tablero)
+    Bordes: #E0E0E0 (Un gris suave para los bordes de las celdas)
+    Texto X/O: #333333 (Un gris oscuro para el texto de las celdas)
+    Botón de Reinicio: #007BFF (Un azul brillante)
+    Hover en el Botón: #0056b3 (Un azul más oscuro para el efecto hover del botón)
+    Ganador: #28A745 (Un verde para resaltar al ganador)
+    Empate: #FFC107 (Un amarillo para el mensaje de empate)
