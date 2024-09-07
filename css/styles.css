@@ -27,7 +27,6 @@ h1 {
 .game-container {
     margin: auto;
     max-width: 330px;
-    border: rgb(173, 3, 31) 1px solid;
 }
 
 .game-scores {
