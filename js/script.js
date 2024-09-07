@@ -1,153 +1,158 @@
-class TicTacToe {
-    constructor() {
-        this.cells = document.querySelectorAll('.cell');
-        this.resetButton = document.getElementById('reset-btn');
-        this.boardElement = document.getElementById('game-board');
-        this.resultModal = document.getElementById('result-modal');
-        this.modalMessage = document.getElementById('modal-message');
-        this.modalButtons = document.querySelectorAll('.modal-button');
-        this.scoresElements = document.querySelectorAll('.score');
-        this.turnDisplay = document.getElementById('turn');
+// Elementos del DOM
+const cells = document.querySelectorAll('.cell');
+const resetButton = document.getElementById('reset-btn');
+const boardElement = document.getElementById('game-board');
+const resultModal = document.getElementById('result-modal');
+const modalMessage = document.getElementById('modal-message');
+const modalButtons = document.querySelectorAll('.modal-button');
+const scoresElements = document.querySelectorAll('.score');
+const turnDisplay = document.getElementById('turn');
 
-        this.currentPlayer = 'X';
-        this.board = Array(9).fill('');
-        this.gameInProgress = true;
-        this.scores = { X: 0, ties: 0, O: 0 };
+// Variables de estado del juego
+let currentPlayer = 'X';
+let board = Array(9).fill('');
+let gameInProgress = true;
+let scores = { X: 0, ties: 0, O: 0 };
 
-        this.init();
-    }
+// Inicializa el juego y listeners
+function init() {
+    updateScores();
+    cells.forEach((cell, index) => {
+        cell.dataset.index = index;
+        cell.addEventListener('click', handleClick);
+    });
+    resetButton.addEventListener('click', () => showModal('Se borrarán los puntajes!', true));
+    modalButtons[1].addEventListener('click', hideModal);
+}
 
-    init() {
-        this.updateScores();
-        this.cells.forEach((cell, index) => {
-            cell.dataset.index = index;
-            cell.addEventListener('click', (event) => this.handleClick(event));
-        });
-        this.resetButton.addEventListener('click', () => {
-            this.showModal('Se borrarán los puntajes!', true);
-        });
-        this.modalButtons[1].addEventListener('click', () => this.hideModal());
-    }
+// Actualiza las puntuaciones en el DOM
+function updateScores() {
+    const { X, ties, O } = scores;
+    [X, ties, O].forEach((score, index) => {
+        scoresElements[index].textContent = score;
+    });
+}
 
-    updateScores() {
-        this.scoresElements.forEach((element, index) => {
-            element.textContent = Object.values(this.scores)[index];
-        });
-    }
+// Obtiene las coordenadas del centro de un elemento
+function getCenterCoordinates(element) {
+    const rect = element.getBoundingClientRect();
+    return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+    };
+}
 
-    getCenterCoordinates(element) {
-        const rect = element.getBoundingClientRect();
-        return {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2,
-        };
-    }
+// Dibuja la línea ganadora
+function drawWinningLine([start, , end]) {
+    const startCell = getCenterCoordinates(cells[start]);
+    const endCell = getCenterCoordinates(cells[end]);
+    const boardRect = boardElement.getBoundingClientRect();
 
-    drawWinningLine(winningPattern) {
-        const [start, , end] = winningPattern;
-        const startCell = this.getCenterCoordinates(this.cells[start]);
-        const endCell = this.getCenterCoordinates(this.cells[end]);
-        const boardRect = this.boardElement.getBoundingClientRect();
+    const x1 = startCell.x - boardRect.left;
+    const y1 = startCell.y - boardRect.top;
+    const x2 = endCell.x - boardRect.left;
+    const y2 = endCell.y - boardRect.top;
 
-        const x1 = startCell.x - boardRect.left;
-        const y1 = startCell.y - boardRect.top;
-        const x2 = endCell.x - boardRect.left;
-        const y2 = endCell.y - boardRect.top;
+    const length = Math.hypot(x2 - x1, y2 - y1);
+    const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
 
-        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-        const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+    const winningLine = document.createElement('div');
+    Object.assign(winningLine.style, {
+        position: 'absolute',
+        backgroundColor: 'red',
+        zIndex: '1',
+        left: `${Math.min(x1, x2)}px`,
+        top: `${Math.min(y1, y2)}px`,
+        width: `${length}px`,
+        height: '5px',
+        transformOrigin: '0 0',
+        transform: `rotate(${angle}deg)`,
+    });
 
-        const winningLine = document.createElement('div');
-        winningLine.classList.add('winning-line');
-        Object.assign(winningLine.style, {
-            position: 'absolute',
-            backgroundColor: 'red',
-            zIndex: '1',
-            left: `${Math.min(x1, x2)}px`,
-            top: `${Math.min(y1, y2)}px`,
-            width: `${length}px`,
-            height: '5px',
-            transformOrigin: '0 0',
-            transform: `rotate(${angle}deg)`,
-        });
+    winningLine.classList.add('winning-line');
+    boardElement.appendChild(winningLine);
+}
 
-        this.boardElement.appendChild(winningLine);
-    }
+// Muestra el modal con mensaje
+function showModal(message, resetAll = false) {
+    modalMessage.textContent = message;
+    resultModal.style.display = 'block';
 
-    showModal(message, isReset = false) {
-        this.modalMessage.textContent = message;
-        this.resultModal.style.display = 'block';
+    modalButtons[0].onclick = () => {
+        hideModal();
+        resetAll ? resetAllGame() : resetGame();
+    };
+}
 
-        this.modalButtons[0].addEventListener('click', () => {
-            this.hideModal();
-            isReset ? this.resetAllGame() : this.resetGame();
-        });
-    }
+// Oculta el modal
+function hideModal() {
+    resultModal.style.display = 'none';
+}
 
-    hideModal() {
-        this.resultModal.style.display = 'none';
-    }
+// Verifica si hay un ganador o empate
+function checkWinner() {
+    const winPatterns = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6],
+    ];
 
-    checkWinner() {
-        const winPatterns = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6],
-        ];
-
-        for (const pattern of winPatterns) {
-            const [a, b, c] = pattern;
-            if (this.board[a] && this.board[a] === this.board[b] && this.board[a] === this.board[c]) {
-                this.drawWinningLine(pattern);
-                this.scores[this.board[a]]++;
-                this.updateScores();
-                this.showModal(`¡Ganador: ${this.board[a]}!`);
-                this.gameInProgress = false;
-                return;
-            }
-        }
-
-        if (!this.board.includes('')) {
-            this.scores.ties++;
-            this.updateScores();
-            this.showModal('¡Empate!');
-            this.gameInProgress = false;
+    for (const pattern of winPatterns) {
+        const [a, b, c] = pattern;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            drawWinningLine(pattern);
+            scores[currentPlayer]++;
+            updateScores();
+            showModal(`¡Ganador: ${currentPlayer}!`);
+            gameInProgress = false;
+            return;
         }
     }
 
-    handleClick(event) {
-        if (!this.gameInProgress) return;
-
-        const index = event.target.dataset.index;
-
-        if (this.board[index] || !index) return;
-
-        this.board[index] = this.currentPlayer;
-        event.target.innerHTML = `<img src="assets/icon/${this.currentPlayer.toLowerCase}-icon.svg" alt="${this.currentPlayer}">`;
-
-        this.checkWinner();
-        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
-        this.turnDisplay.textContent = `TURNO DE ${this.currentPlayer}`;
-    }
-
-    resetGame() {
-        this.board.fill('');
-        this.cells.forEach(cell => cell.innerHTML = '');
-        this.currentPlayer = 'X';
-        this.gameInProgress = true;
-        this.removeWinningLine();
-    }
-
-    resetAllGame() {
-        this.resetGame();
-        this.scores = { X: 0, ties: 0, O: 0 };
-        this.updateScores();
-    }
-
-    removeWinningLine() {
-        document.querySelectorAll('.winning-line').forEach(line => line.remove());
+    if (!board.includes('')) {
+        scores.ties++;
+        updateScores();
+        showModal('¡Empate!');
+        gameInProgress = false;
     }
 }
 
-// Inicializar el juego
-new TicTacToe();
+// Maneja el clic en una celda
+function handleClick(event) {
+    if (!gameInProgress) return;
+
+    const index = event.target.dataset.index;
+    if (board[index]) return;
+
+    board[index] = currentPlayer;
+    event.target.innerHTML = `<img src="assets/icon/${currentPlayer.toLowerCase()}-icon.svg" alt="${currentPlayer}">`;
+
+    checkWinner();
+
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    turnDisplay.textContent = `TURNO DE ${currentPlayer}`;
+}
+
+// Resetea el juego sin modificar el puntaje
+function resetGame() {
+    board.fill('');
+    cells.forEach(cell => (cell.innerHTML = ''));
+    currentPlayer = 'X';
+    gameInProgress = true;
+    removeWinningLine();
+}
+
+// Resetea todo el juego incluyendo el puntaje
+function resetAllGame() {
+    resetGame();
+    scores = { X: 0, ties: 0, O: 0 };
+    updateScores();
+}
+
+// Remueve la línea ganadora del tablero
+function removeWinningLine() {
+    document.querySelectorAll('.winning-line').forEach(line => line.remove());
+}
+
+// Inicializa el juego
+init();
