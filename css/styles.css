@@ -1,4 +1,3 @@
-/* CSS existente */
 
 @font-face {
     font-family: 'Rubik';
@@ -14,6 +13,7 @@
 }
 
 body {
+    background: #e0e0e0;
     font-family: Rubik, sans-serif;
     text-align: center;
     max-width: 100vw;
@@ -35,10 +35,10 @@ h1 {
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(1, 50px);
     gap: 5px;
-    margin: 20px auto;
+    margin: 5px auto;
     max-width: 320px;
-    border: black 1px solid;
     padding: 5px;
+    border-radius: 5px;
 }
 
 .game-scores > div {
@@ -60,6 +60,7 @@ h1 {
 }
 
 .turn-container {
+    background: #F8F9FA;
     display: flex;
     align-items: center;
     align-content: center;
@@ -68,7 +69,6 @@ h1 {
     height: 50px;
     margin: 0 5px;
     border-radius: 5px;
-    border: 1px orange solid;
 }
 .turn-container>p {
     margin: 0 auto;
@@ -80,18 +80,18 @@ h1 {
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 1fr);
     gap: 5px;
-    margin: 20px auto;
+    margin: 5px auto;
     max-width: 320px;
-    border: rgb(0, 177, 44) 1px solid;
     padding: 5px;
-    position: relative; /* Para el posicionamiento de la línea ganadora */
+    border-radius: 5px;
+    position: relative;
 }
 
 .cell {
     width: 100px;
     height: 100px;
     background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    border: 1px solid #c7c7c7;
     font-size: 2em;
     display: flex;
     align-items: center;
@@ -101,11 +101,14 @@ h1 {
 }
 
 .cell:hover {
-    background-color: #e0e0e0;
+    background-color: #dfdfdf;
 }
 
 #reset-btn {
-    width: 100%;
+    background: #F8F9FA;
+    border: none;
+    border-radius: 5px;
+    margin: 5px auto;
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
@@ -114,8 +117,8 @@ h1 {
 #winning-line {
     position: absolute;
     background-color: red;
-    pointer-events: none; /* No interferir con el clic en el tablero */
-    z-index: 1; /* Asegurarse de que la línea esté por encima del tablero */
+    pointer-events: none;
+    z-index: 1;
 }
 
 @keyframes drawLine {
@@ -127,9 +130,8 @@ h1 {
     }
 }
 
-/* Estilos para el modal */
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -137,7 +139,7 @@ h1 {
     width: 100vw;
     height: 100vh;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro */
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
@@ -147,7 +149,7 @@ h1 {
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Ancho del modal */
+    width: 80%;
     max-width: 500px;
     text-align: center;
     border: gray 1px solid;
@@ -155,7 +157,7 @@ h1 {
 }
 
 .modal-button {
-    background-color: #4CAF50; /* Verde */
+    background-color: #21b326;
     border: none;
     color: white;
     padding: 10px 20px;
@@ -164,5 +166,6 @@ h1 {
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
+    border-radius: 5px;
     cursor: pointer;
 }

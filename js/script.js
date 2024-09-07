@@ -78,6 +78,8 @@ function showModal(message, resetAll = false) {
     modalMessage.textContent = message;
     resultModal.style.display = 'block';
 
+    resetAll ? modalButtons[1].style.display = 'inline-block' : modalButtons[1].style.display = 'none'
+
     modalButtons[0].onclick = () => {
         hideModal();
         resetAll ? resetAllGame() : resetGame();
