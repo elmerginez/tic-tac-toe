@@ -123,7 +123,7 @@ class TicTacToe {
         if (this.board[index] || !index) return;
 
         this.board[index] = this.currentPlayer;
-        event.target.innerHTML = `<img src="assets/icon/${this.currentPlayer}-icon.svg" alt="${this.currentPlayer}">`;
+        event.target.innerHTML = `<img src="assets/icon/${this.currentPlayer.toLowerCase}-icon.svg" alt="${this.currentPlayer}">`;
 
         this.checkWinner();
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
