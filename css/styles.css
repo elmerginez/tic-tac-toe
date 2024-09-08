@@ -10,6 +10,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: all .5s ease-in-out;
 }
 
 body {
@@ -111,6 +112,10 @@ h1 {
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
+}
+
+.highlight-winner {
+    border: 3px solid green; /* Cambia el color y grosor del borde según tu preferencia */
 }
 
 #winning-line {

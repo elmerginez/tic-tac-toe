@@ -74,6 +74,21 @@ function drawWinningLine([start, , end]) {
     boardElement.appendChild(winningLine);
 }
 
+/// Resalta los cuadros del ganador aplicando una clase CSS
+function resaltWinner(pattern) {
+    pattern.forEach(index => {
+        cells[index].classList.add('highlight-winner');
+    });
+}
+
+// Remueve el resalte de los cuadros ganadores
+function removeResaltWinner() {
+    cells.forEach(cell => {
+        cell.classList.remove('highlight-winner');
+    });
+}
+
+
 // Muestra el modal con mensaje
 function showModal(message, resetAll = false) {
     modalMessage.textContent = message;
@@ -103,6 +118,7 @@ function checkWinner() {
     for (const pattern of winPatterns) {
         const [a, b, c] = pattern;
         if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            resaltWinner(pattern)
             drawWinningLine(pattern);
             scores[currentPlayer]++;
             updateScores();
@@ -143,6 +159,7 @@ function resetGame() {
     currentPlayer = 'X';
     gameInProgress = true;
     removeWinningLine();
+    removeResaltWinner()
 }
 
 // Resetea todo el juego incluyendo el puntaje
