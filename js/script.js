@@ -67,6 +67,7 @@ function drawWinningLine([start, , end]) {
         height: '5px',
         transformOrigin: '0 0',
         transform: `rotate(${angle}deg)`,
+        borderRadius: '2px',
     });
 
     winningLine.classList.add('winning-line');

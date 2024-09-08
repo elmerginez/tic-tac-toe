@@ -42,7 +42,6 @@ h1 {
 }
 
 .game-scores > div {
-    border: blue 1px solid;
     border-radius: 5px;
     padding-top: 5px;
 }
@@ -119,6 +118,7 @@ h1 {
     background-color: red;
     pointer-events: none;
     z-index: 1;
+    border-radius: 5px !important;
 }
 
 @keyframes drawLine {
