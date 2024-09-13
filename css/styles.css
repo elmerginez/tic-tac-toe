@@ -105,17 +105,18 @@ h1 {
 }
 
 #reset-btn {
-    background: #F8F9FA;
+    background: #ff00007a;
     border: none;
     border-radius: 5px;
     margin: 5px auto;
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
+    color: #ffff;
 }
 
 .highlight-winner {
-    border: 3px solid green; /* Cambia el color y grosor del borde según tu preferencia */
+    border: 3px solid green;
 }
 
 #winning-line {
